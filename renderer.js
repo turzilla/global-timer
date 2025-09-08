@@ -169,13 +169,37 @@ class TimerApp {
             this.timerInterval = null;
         }
         
+        // Notify main process
+        window.electronAPI.timerStatusChanged(false);
+    }
+    
+    resetTimer() {
+        this.stopTimer();
+        this.timeRemaining = this.settings.timerLength * 60; // Convert minutes to seconds
+        this.updateDisplay();
+        this.timerDisplay.classList.remove('finished');
+    }
+    
+    finishTimer() {
+        this.isRunning = false;
+        this.startBtn.disabled = false;
+        this.stopBtn.disabled = true;
+        this.timerLengthInput.disabled = false;
+        
+        this.timerDisplay.classList.remove('running');
+        this.timerDisplay.classList.add('finished');
+        
+        if (this.timerInterval) {
+            clearInterval(this.timerInterval);
+            this.timerInterval = null;
+        }
+        
         // Notify main process that timer ended
         window.electronAPI.timerStatusChanged(false);
         window.electronAPI.timerEnded();
         
-        // Play sound if enabled (browser notification sound)
+        // Play sound if enabled
         if (this.settings.soundOnEnd) {
-            // Create audio context for notification sound
             this.playNotificationSound();
         }
     }
@@ -240,7 +264,13 @@ class TimerApp {
         
         // Add the main key (ignore modifier keys themselves)
         if (!['Control', 'Alt', 'Shift', 'Meta'].includes(e.key)) {
-            keys.push(e.key.toUpperCase());
+            let keyName = e.key;
+            
+            // Handle special keys
+            if (keyName === ' ') keyName = 'Space';
+            else if (keyName.length === 1) keyName = keyName.toUpperCase();
+            
+            keys.push(keyName);
         }
         
         if (keys.length > 1) { // Must have at least one modifier + one key
@@ -274,30 +304,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Cleanup when page unloads
 window.addEventListener('beforeunload', () => {
-    window.electronAPI.removeAllListeners();
+    if (window.electronAPI && window.electronAPI.removeAllListeners) {
+        window.electronAPI.removeAllListeners();
+    }
 });
-            this.timerInterval = null;
-        }
-        
-        // Notify main process
-        window.electronAPI.timerStatusChanged(false);
-    }
-    
-    resetTimer() {
-        this.stopTimer();
-        this.timeRemaining = this.settings.timerLength * 60; // Convert minutes to seconds
-        this.updateDisplay();
-        this.timerDisplay.classList.remove('finished');
-    }
-    
-    finishTimer() {
-        this.isRunning = false;
-        this.startBtn.disabled = false;
-        this.stopBtn.disabled = true;
-        this.timerLengthInput.disabled = false;
-        
-        this.timerDisplay.classList.remove('running');
-        this.timerDisplay.classList.add('finished');
-        
-        if (this.timerInterval) {
-            clearInterval(this.timerInterval);

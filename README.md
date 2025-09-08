@@ -4,14 +4,14 @@ A simple, customizable timer application with global hotkeys and system notifica
 
 ## Features
 
-- ✅ Customizable timer length
-- ✅ Global hotkeys that work even when app is not focused
-- ✅ Option to disable hotkeys when timer is running
-- ✅ Pop-up window when timer ends (optional)
-- ✅ Notification sound when timer ends (optional)
-- ✅ Settings persistence
-- ✅ System tray integration
-- ✅ Single instance (prevents multiple copies)
+- Customizable timer length
+- Global hotkeys that work even when app is not focused
+- Option to disable hotkeys when timer is running
+- Pop-up window when timer ends (optional)
+- Notification sound when timer ends (optional)
+- Settings persistence
+- System tray integration
+- Single instance (prevents multiple copies)
 
 ## Setup Instructions
 
