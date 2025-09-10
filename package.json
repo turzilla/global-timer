@@ -14,7 +14,7 @@
     "productivity",
     "electron"
   ],
-  "author": "Your Name",
+  "author": "turzilla",
   "license": "MIT",
   "devDependencies": {
     "electron": "^27.0.0",
@@ -24,7 +24,7 @@
     "electron-store": "^8.1.0"
   },
   "build": {
-    "appId": "com.yourname.simple-timer",
+    "appId": "com.turzilla.simple-timer",
     "productName": "Simple Timer",
     "directories": {
       "output": "dist"

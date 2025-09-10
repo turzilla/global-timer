@@ -209,35 +209,38 @@ ipcMain.handle('timer-ended', () => {
 
 // App event handlers
 app.whenReady().then(() => {
-  createWindow();
-  
-  app.on('activate', () => {
+    createWindow();
+
+    // Remove default menu (File/Edit/Help)
+    Menu.setApplicationMenu(null);
+    
+    app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow();
+        createWindow();
     }
   });
 });
 
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
+    if (process.platform !== 'darwin') {
+        app.quit();
+    }
 });
 
 app.on('will-quit', () => {
-  globalShortcut.unregisterAll();
+    globalShortcut.unregisterAll();
 });
 
 // Prevent multiple instances
 const gotTheLock = app.requestSingleInstanceLock();
 
 if (!gotTheLock) {
-  app.quit();
+    app.quit();
 } else {
-  app.on('second-instance', () => {
-    if (mainWindow) {
-      if (mainWindow.isMinimized()) mainWindow.restore();
-      mainWindow.focus();
-    }
-  });
+    app.on('second-instance', () => {
+        if (mainWindow) {
+            if (mainWindow.isMinimized()) mainWindow.restore();
+                mainWindow.focus();
+        }
+    });
 }

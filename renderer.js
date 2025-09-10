@@ -14,12 +14,12 @@ class TimerApp {
     initializeElements() {
         // Timer elements
         this.timerDisplay = document.getElementById('timerDisplay');
-        this.startBtn = document.getElementById('startBtn');
-        this.stopBtn = document.getElementById('stopBtn');
-        this.resetBtn = document.getElementById('resetBtn');
+        this.startButton = document.getElementById('startButton');
+        this.stopButton = document.getElementById('stopButton');
+        this.resetButton = document.getElementById('resetButton');
         
         // Settings elements
-        this.timerLengthInput = document.getElementById('timerLength');
+        this.timerLengthInput = document.getElementById('timerLength'); // CHANGE THIS
         this.popupOnEndCheckbox = document.getElementById('popupOnEnd');
         this.soundOnEndCheckbox = document.getElementById('soundOnEnd');
         this.disableHotkeysCheckbox = document.getElementById('disableHotkeysWhenRunning');
@@ -28,15 +28,15 @@ class TimerApp {
         this.startHotkeyInput = document.getElementById('startHotkey');
         this.stopHotkeyInput = document.getElementById('stopHotkey');
         this.resetHotkeyInput = document.getElementById('resetHotkey');
-        this.changeStartHotkeyBtn = document.getElementById('changeStartHotkey');
-        this.changeStopHotkeyBtn = document.getElementById('changeStopHotkey');
-        this.changeResetHotkeyBtn = document.getElementById('changeResetHotkey');
+        this.changeStartHotkeyButton = document.getElementById('changeStartHotkey');
+        this.changeStopHotkeyButton = document.getElementById('changeStopHotkey');
+        this.changeResetHotkeyButton = document.getElementById('changeResetHotkey');
         
         // Modal elements
         this.hotkeyModal = document.getElementById('hotkeyModal');
         this.hotkeyPreview = document.getElementById('hotkeyPreview');
-        this.saveHotkeyBtn = document.getElementById('saveHotkey');
-        this.cancelHotkeyBtn = document.getElementById('cancelHotkey');
+        this.saveHotkeyButton = document.getElementById('saveHotkey');
+        this.cancelHotkeyButton = document.getElementById('cancelHotkey');
         
         this.currentHotkeyType = null;
         this.capturedHotkey = null;
@@ -56,8 +56,8 @@ class TimerApp {
         this.stopHotkeyInput.value = this.formatHotkeyDisplay(this.settings.hotkeys.stop);
         this.resetHotkeyInput.value = this.formatHotkeyDisplay(this.settings.hotkeys.reset);
         
-        // Reset timer with current length
-        this.resetTimer();
+        // set timer with current length
+        this.setTimer();
     }
     
     formatHotkeyDisplay(hotkey) {
@@ -66,9 +66,9 @@ class TimerApp {
     
     setupEventListeners() {
         // Timer controls
-        this.startBtn.addEventListener('click', () => this.startTimer());
-        this.stopBtn.addEventListener('click', () => this.stopTimer());
-        this.resetBtn.addEventListener('click', () => this.resetTimer());
+        this.startButton.addEventListener('click', () => this.startTimer());
+        this.stopButton.addEventListener('click', () => this.stopTimer());
+        this.resetButton.addEventListener('click', () => this.resetTimer());
         
         // Settings
         this.timerLengthInput.addEventListener('change', (e) => {
@@ -91,13 +91,13 @@ class TimerApp {
         });
         
         // Hotkey change buttons
-        this.changeStartHotkeyBtn.addEventListener('click', () => this.openHotkeyModal('start'));
-        this.changeStopHotkeyBtn.addEventListener('click', () => this.openHotkeyModal('stop'));
-        this.changeResetHotkeyBtn.addEventListener('click', () => this.openHotkeyModal('reset'));
+        this.changeStartHotkeyButton.addEventListener('click', () => this.openHotkeyModal('start'));
+        this.changeStopHotkeyButton.addEventListener('click', () => this.openHotkeyModal('stop'));
+        this.changeResetHotkeyButton.addEventListener('click', () => this.openHotkeyModal('reset'));
         
         // Modal buttons
-        this.saveHotkeyBtn.addEventListener('click', () => this.saveHotkey());
-        this.cancelHotkeyBtn.addEventListener('click', () => this.closeHotkeyModal());
+        this.saveHotkeyButton.addEventListener('click', () => this.saveHotkey());
+        this.cancelHotkeyButton.addEventListener('click', () => this.closeHotkeyModal());
         
         // Modal keyboard capture
         document.addEventListener('keydown', (e) => this.captureHotkey(e));
@@ -114,10 +114,12 @@ class TimerApp {
         window.electronAPI.onHotkeyAction((action) => {
             switch (action) {
                 case 'start':
-                    if (!this.isRunning) this.startTimer();
+                    if (!this.isRunning) 
+                        this.startTimer();
                     break;
                 case 'stop':
-                    if (this.isRunning) this.stopTimer();
+                    if (this.isRunning) 
+                        this.stopTimer();
                     break;
                 case 'reset':
                     this.resetTimer();
@@ -132,11 +134,12 @@ class TimerApp {
     }
     
     startTimer() {
-        if (this.isRunning) return;
+        if (this.isRunning) 
+            return;
         
         this.isRunning = true;
-        this.startBtn.disabled = true;
-        this.stopBtn.disabled = false;
+        this.startButton.disabled = true;
+        this.stopButton.disabled = false;
         this.timerLengthInput.disabled = true;
         
         this.timerDisplay.classList.add('running');
@@ -158,8 +161,8 @@ class TimerApp {
         if (!this.isRunning) return;
         
         this.isRunning = false;
-        this.startBtn.disabled = false;
-        this.stopBtn.disabled = true;
+        this.startButton.disabled = false;
+        this.stopButton.disabled = true;
         this.timerLengthInput.disabled = false;
         
         this.timerDisplay.classList.remove('running');
@@ -173,17 +176,22 @@ class TimerApp {
         window.electronAPI.timerStatusChanged(false);
     }
     
-    resetTimer() {
-        this.stopTimer();
+    setTimer() { // CHANGE THIS 
         this.timeRemaining = this.settings.timerLength * 60; // Convert minutes to seconds
         this.updateDisplay();
+    }
+
+    resetTimer() {
+        this.stopTimer();
+        this.setTimer()
         this.timerDisplay.classList.remove('finished');
+        this.startTimer();
     }
     
     finishTimer() {
         this.isRunning = false;
-        this.startBtn.disabled = false;
-        this.stopBtn.disabled = true;
+        this.startButton.disabled = false;
+        this.stopButton.disabled = true;
         this.timerLengthInput.disabled = false;
         
         this.timerDisplay.classList.remove('running');
@@ -240,7 +248,7 @@ class TimerApp {
         this.capturedHotkey = null;
         this.hotkeyPreview.textContent = 'Press keys...';
         this.hotkeyPreview.classList.remove('recording');
-        this.saveHotkeyBtn.disabled = true;
+        this.saveHotkeyButton.disabled = true;
         this.hotkeyModal.style.display = 'block';
     }
     
@@ -251,33 +259,39 @@ class TimerApp {
     }
     
     captureHotkey(e) {
-        if (this.hotkeyModal.style.display !== 'block') return;
+        if (this.hotkeyModal.style.display !== 'block') 
+            return;
         
         e.preventDefault();
         e.stopPropagation();
         
         const keys = [];
         
-        if (e.ctrlKey || e.metaKey) keys.push('CommandOrControl');
-        if (e.altKey) keys.push('Alt');
-        if (e.shiftKey) keys.push('Shift');
+        if (e.ctrlKey || e.metaKey) 
+            keys.push('CommandOrControl');
+        if (e.altKey) 
+            keys.push('Alt');
+        if (e.shiftKey) 
+            keys.push('Shift');
         
         // Add the main key (ignore modifier keys themselves)
         if (!['Control', 'Alt', 'Shift', 'Meta'].includes(e.key)) {
             let keyName = e.key;
             
             // Handle special keys
-            if (keyName === ' ') keyName = 'Space';
-            else if (keyName.length === 1) keyName = keyName.toUpperCase();
+            if (keyName === ' ') 
+                keyName = 'Space';
+            else if (keyName.length === 1) 
+                keyName = keyName.toUpperCase();
             
             keys.push(keyName);
         }
         
-        if (keys.length > 1) { // Must have at least one modifier + one key
+        if (keys.length > 0) { // Must have at least one modifier + one key
             this.capturedHotkey = keys.join('+');
             this.hotkeyPreview.textContent = this.formatHotkeyDisplay(this.capturedHotkey);
             this.hotkeyPreview.classList.add('recording');
-            this.saveHotkeyBtn.disabled = false;
+            this.saveHotkeyButton.disabled = false;
         }
     }
     
