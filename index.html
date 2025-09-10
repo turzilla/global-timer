@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Timer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Global Timer</h1>
+        </header>
+        
+        <main>
+            <!-- Timer Display -->
+            <!-- CHANGE THIS -->
+            <div class="timer-section">
+                <div class="timer-display" id="timerDisplay">10:00</div>
+                <div class="timer-controls">
+                    <button id="startButton" class="btn btn-primary">Start</button>
+                    <button id="stopButton" class="btn btn-secondary" disabled>Stop</button>
+                    <button id="resetButton" class="btn btn-secondary">Reset</button>
+                </div>
+            </div>
+            
+            <!-- Settings -->
+            <div class="settings-section">
+                <h3>Settings</h3>
+                
+                <!-- CHANGE THIS -->
+                <div class="setting-group">
+                    <label for="timerLength">Timer Length (minutes):</label>
+                    <input type="number" id="timerLength" min="1" max="999" value="10">
+                </div>
+                
+                <div class="setting-group">
+                    <label>
+                        <input type="checkbox" id="popupOnEnd" checked>
+                        Pop up window when timer ends
+                    </label>
+                </div>
+                
+                <div class="setting-group">
+                    <label>
+                        <input type="checkbox" id="soundOnEnd" checked>
+                        Play notification sound when timer ends
+                    </label>
+                </div>
+                
+                <div class="setting-group">
+                    <label>
+                        <input type="checkbox" id="disableHotkeysWhenRunning">
+                        Disable hotkeys when timer is running
+                    </label>
+                </div>
+                
+                <div class="hotkeys-section">
+                    <h4>Global Hotkeys</h4>
+                    <div class="hotkey-group">
+                        <label for="startHotkey">Start Timer:</label>
+                        <input type="text" id="startHotkey" value="Ctrl+Shift+S" readonly>
+                        <button class="btn btn-small" id="changeStartHotkey">Change</button>
+                    </div>
+                    
+                    <div class="hotkey-group">
+                        <label for="stopHotkey">Stop Timer:</label>
+                        <input type="text" id="stopHotkey" value="Ctrl+Shift+P" readonly>
+                        <button class="btn btn-small" id="changeStopHotkey">Change</button>
+                    </div>
+                    
+                    <div class="hotkey-group">
+                        <label for="resetHotkey">Reset Timer:</label>
+                        <input type="text" id="resetHotkey" value="Ctrl+Shift+R" readonly>
+                        <button class="btn btn-small" id="changeResetHotkey">Change</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Hotkey Input Modal -->
+    <div id="hotkeyModal" class="modal">
+        <div class="modal-content">
+            <h3>Set Hotkey</h3>
+            <p>Press the key combination you want to use:</p>
+            <div class="hotkey-display" id="hotkeyPreview">Press keys...</div>
+            <div class="modal-buttons">
+                <button id="saveHotkey" class="btn btn-primary" disabled>Save</button>
+                <button id="cancelHotkey" class="btn btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="renderer.js"></script>
+</body>
+</html>
